@@ -1,7 +1,6 @@
 ###
 ### Задание 1, Вариант 2, Строки №6
 ###
-
 #Функция подсчета уникальных букв в строке
 def isPangramma(str):
     if len(str) == 0: #Если строка в рекурсии закончилась, выходим из рекурсии
@@ -11,7 +10,8 @@ def isPangramma(str):
             return 0 + isPangramma(str[1:]) #Cодержится, возвращаем ноль, отдаем на проверку оставшиеся буквы
         else:
             return 1 + isPangramma(str[1:]) #Буква не содержится, вовращаем 1 и передаем остаток
-#Функция поиска букв в строке
+
+#Функция поиска букв в строке, из плюсов не требует ничего делать с пробелами и лишними символами
 def isPangramma_ascii(str):
     if len(str) >= 26:
         for i in range(26):
@@ -23,10 +23,11 @@ def isPangramma_ascii(str):
         return str + " \nне является панграммой"
     else:
         return "не хватает букв"
+
 #
 ## Подготовка данных
 #
-input="qwertyuiopasdfghjklzxcvbnzzs"  #вводимая строка
+input="qwerty   uiopa  sdfghjklzxcv   bnm  "  #вводимая строка
 string='' # Объявляка (без нее не захотела, надо разобраться.
 # Сплитм строку по пробелам, потом клеим в строку
 for part in input.split( ):
@@ -37,4 +38,4 @@ if isPangramma(string.lower()) == 26:
 else:
     print("  Введенная строка:\n   " + string + "\n   не является панграммой, т.к. не уникальных хватает букв, а больше 26 их быть не может по условию")
 print (" Вариант ASCII:")
-print(isPangramma_ascii(string.lower()))
+print(isPangramma_ascii(input.lower()))
