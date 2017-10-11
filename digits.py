@@ -1,3 +1,6 @@
+###
+### Задание 1, Вариант 2, Числа №2
+###
 def NeededDesk(numbers):
     desk=0
     for num in numbers:
