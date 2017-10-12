@@ -28,15 +28,23 @@ def is_pangramma_ascii(str):
 ## Подготовка данных
 #
 #вводимая строка
-input=""
-string='' # Объявляка (без нее не захотела, надо разобраться.
+#input="asdfghjklasdfghjklasdfghjklasdfghjklqwertyuioppoiuytrewqzxcvbnmZXCVBNMJYTREWSXCVGHYUI"
+
+#ручной ввод
+input=input("Введите строку для проверки: ")
+
+def prepare_string(string):
+#string='' # Объявляка (без нее не захотела, надо разобраться.
 # Сплитм строку по пробелам, потом клеим в строку
-for part in input.split( ):
-    string += part
-print (" Вариант Рекурсия:")
-if is_pangramma(string.lower()) == 26:
-    print ("  Введенная строка:\n   "+string+"\n   является панграммой.")
-else:
-    print("  Введенная строка:\n   " + string + "\n   не является панграммой, т.к. не уникальных хватает букв, а больше 26 их быть не может по условию")
+    for part in input.split( ):
+        string += part
+    if is_pangramma(string.lower()) == 26:
+        return "  Введенная строка:\n   "+string+"\n   является панграммой."
+    else:
+        return "  Введенная строка:\n   " + string + "\n   не является панграммой, т.к. не уникальных хватает букв, а больше 26 их быть не может по условию"
+
+print (" Вариант Рекурсия (работает исключительно критериям задачи на вводную строку:")
+print (prepare_string(input))
+
 print (" Вариант ASCII:")
 print(is_pangramma_ascii(input.lower()))
