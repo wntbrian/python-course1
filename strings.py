@@ -27,7 +27,6 @@ def is_pangramma_ascii(str):
         return -1
     else:
         return -1
-
 #
 ## Подготовка данных
 #
