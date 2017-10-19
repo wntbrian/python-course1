@@ -5,9 +5,11 @@
 '''
 ### Ну и как без нее.
 def power(a,n):
-    if n>0:
-        return a*power(a,n-1)
-    else:
+    if n == 0:
         return 1;
+    if n<0:
+        return 1/power(a,-n)
+    return a * power(a, n - 1)
+###map применяет функцию на каждый аргумент списка(списков)
 a, n = map(float, input("Введите a и n, через пробел: ").split())
 print (power(a,int(n)))

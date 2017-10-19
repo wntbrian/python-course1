@@ -7,10 +7,17 @@
 Стандартной функцией возведения в степень пользоваться нельзя.
 '''
 def power(a,n):
+    ls=1
     pw=1
+    if n<0:
+        ls=n
+        n=-n
     while n > 0:
         pw=pw*a
         n=n-1
+    if ls<0:
+        return 1/pw
     return pw
+###map применяет функцию на каждый аргумент списка(списков)
 a, n = map(float, input("Введите a и n, через пробел: ").split())
 print (power(a,int(n)))
