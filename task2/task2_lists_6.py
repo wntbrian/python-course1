@@ -9,3 +9,23 @@ students = [ [Петя, 4.5], [Вася, 4.3], [Коля, 3.5], [Никита, 4
 Вернемся к примеру
 Наименьшая оценка из учеников 3.5, следующая по возрастанию 4.3. Присутствуют два ученика с такой оценкой: Вася и Катя.
 '''
+import re # для формата строки, к цели задачи не относится.
+def func(students):
+    students.sort(key=lambda x: x[1]) #сортруем по оценкам с помощью анонимной функций
+    ref=students[-1][1]
+    for st in students:
+        if(ref>=st[1]>students[0][1]): #критерий выбра ученика с предпоследней оценкой
+            ref=st[1]
+            print(st[0])
+
+str = input("Введите данные учеников, Имя и оценку, последовательно: ")
+### переводим неизвестную строку в список ученика с оценкой.
+lst=re.split('[^А-Яа-я]+',str)
+lst2=re.split('[^0-9.]+',str)
+lst = list(filter(None,lst))
+lst2 = list(filter(None,lst2))
+res_list = list()
+for item in lst:
+    res_list.append([item,lst2[lst.index(item)]])
+
+func(res_list)
