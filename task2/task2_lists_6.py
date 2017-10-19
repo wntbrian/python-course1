@@ -25,7 +25,7 @@ lst2=re.split('[^0-9.]+',str)
 lst = list(filter(None,lst))
 lst2 = list(filter(None,lst2))
 res_list = list()
-for item in lst:
-    res_list.append([item,lst2[lst.index(item)]])
+for id,item in enumerate(lst):
+    res_list.append([item,lst2[id]])
 
 func(res_list)
