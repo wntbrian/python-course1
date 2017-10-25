@@ -6,17 +6,6 @@
 второй - (-2;4).
 Во второй файл требуется построчно записать наибольшее
 и наименьшее расстояние между точками.
-
-Cоздать типизированный файл записей со сведениями о телефонах абонентов
-каждая запись имеет поля:
-фамилия абонента, год установки телефона, номер телефона.
-По заданной фамилии абонента выдать номера его телефонов.
-Определить количество установленных телефонов с N-го года.
-
-*Для самых смелых.
-Написать консольную утилиту, передав которому путь к какой то папке,
-она выводит список файлов и папок, которые есть в этой папке.
-Используя библиотеки os и sys
 """
 import os
 
@@ -28,13 +17,12 @@ FILENAME_OUTPUT="output"
 def read_file_form_path(self):
     try:
         file = open(self,'r')
+        strings = file.readlines()
+        return strings
     except FileNotFoundError:
-        print("Файл {} не найден, создайте фаил и запустите скрипт заного."
-              .format(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                   self)))
+        print("Файл {} не найден, создайте файл и запустите скрипт заново."
+              .format(os.path.join(os.path.dirname(os.path.realpath(__file__)), self)))
         close_application()
-    strings = file.readlines()
-    return strings
 
 
 def close_application():
@@ -47,37 +35,42 @@ def calc_distance(self):
     from math import sqrt
     for coord in self:
         distance.append(sqrt((abs(coord[0]**2-coord[2]**2))
-                             + abs((coord[1]**2-coord[3]**2))))
+                             +abs((coord[1]**2-coord[3]**2))))
     return distance
 
 
 def find_max_min(self):
     self.sort()
-    return [self[0], self[-1]]
+    try:
+        return [self[0], self[-1]]
+    except IndexError:
+        print("Не достаточно точек. Расстояние - 0")
+        return [0]
 
 
 def write_to_file(self, lst):
     with open(self,'w') as file:
-        if (lst[0] == lst[1]):
+        if (len(lst) == 1 or lst[0] == lst[1]):
             file.writelines('{}'.format(lst[0]))
         else:
             file.writelines('{},{}'.format(lst[0],lst[1]))
 
 
 def get_coordinates_from_list(self):
+    import re
     result = list()
-    for coord in self:
+    for str in self:
+        coord = list(filter(None,re.split('[^0-9.]+', str)))
         try:
-            x1, y1, x2, y2 = map(float,coord[:-1].split())
+            x1, y1, x2, y2 = map(float, coord)
             result.append([x1, y1, x2, y2])
         except ValueError:
             print("Сторока с координатами {} имеет не допустимый формат. "
-                  "Точка иключается из подсчета.".format(coord[:-1]))
+                  "Точка иключается из подсчета.".format(str))
     return result
 
-
-write_to_file(FILENAME_OUTPUT,
-              find_max_min(calc_distance(get_coordinates_from_list(read_file_form_path(FILENAME_INPUT)))))
-
-#print(calc_distance(a))
-#print (read_file_form_path("./input"))
+coord_list = read_file_form_path(FILENAME_INPUT)
+coords = get_coordinates_from_list(coord_list)
+dist = calc_distance(coords)
+result_distance = find_max_min(dist)
+write_to_file(FILENAME_OUTPUT,result_distance)
