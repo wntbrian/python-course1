@@ -11,7 +11,7 @@ import os
 
 
 FILENAME_INPUT="input"
-FILENAME_OUTPUT="output"
+FILENAME_OUTPUT="out\output"
 
 
 def read_file_form_path(self):
@@ -49,11 +49,16 @@ def find_max_min(self):
 
 
 def write_to_file(self, lst):
-    with open(self,'w') as file:
-        if (len(lst) == 1 or lst[0] == lst[1]):
-            file.writelines('{}'.format(lst[0]))
-        else:
-            file.writelines('{},{}'.format(lst[0],lst[1]))
+    try:
+        with open(self,'w') as file:
+            if (len(lst) == 1 or lst[0] == lst[1]):
+                file.writelines('{}'.format(lst[0]))
+            else:
+                file.writelines('{},{}'.format(lst[0],lst[1]))
+    except FileNotFoundError:
+        print("Не возможно создать файл {}. "
+              .format(os.path.join(os.path.dirname(os.path.realpath(__file__)), self)))
+        close_application()
 
 
 def get_coordinates_from_list(self):
