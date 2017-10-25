@@ -11,7 +11,7 @@ import os
 
 
 FILENAME_INPUT="input"
-FILENAME_OUTPUT="out\output"
+FILENAME_OUTPUT="output"
 
 
 def read_file_form_path(self):
