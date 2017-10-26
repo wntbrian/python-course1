@@ -14,14 +14,16 @@ FILENAME_INPUT="input"
 FILENAME_OUTPUT="output"
 
 
-def read_file_form_path(self):
+def read_file_form_path(filename):
     try:
-        file = open(self,'r')
+        file = open(filename, 'r')
         strings = file.readlines()
+        file.close()
         return strings
     except FileNotFoundError:
+        filepath = os.path.dirname(os.path.realpath(__file__))
         print("Файл {} не найден, создайте файл и запустите скрипт заново."
-              .format(os.path.join(os.path.dirname(os.path.realpath(__file__)), self)))
+              .format(os.path.join(filepath, filename)))
         close_application()
 
 
@@ -30,41 +32,41 @@ def close_application():
     sys.exit(0)
 
 
-def calc_distance(self):
+def calc_distance(coords):
     distance = list()
     from math import sqrt
-    for coord in self:
-        distance.append(sqrt((abs(coord[0]**2-coord[2]**2))
-                             +abs((coord[1]**2-coord[3]**2))))
+    for coord in coords:
+        distance.append(sqrt((coord[2]-coord[0])**2+(coord[3]-coord[1])**2))
     return distance
 
 
-def find_max_min(self):
-    self.sort()
+def find_max_min(coords):
+    coords.sort()
     try:
-        return [self[0], self[-1]]
+        return [coords[0], coords[-1]]
     except IndexError:
         print("Не достаточно точек. Расстояние - 0")
         return [0]
 
 
-def write_to_file(self, lst):
+def write_to_file(filename, lst):
     try:
-        with open(self,'w') as file:
+        with open(filename,'w') as file:
             if (len(lst) == 1 or lst[0] == lst[1]):
                 file.writelines('{}'.format(lst[0]))
             else:
                 file.writelines('{},{}'.format(lst[0],lst[1]))
     except FileNotFoundError:
+        filepath = os.path.dirname(os.path.realpath(__file__))
         print("Не возможно создать файл {}. "
-              .format(os.path.join(os.path.dirname(os.path.realpath(__file__)), self)))
+              .format(os.path.join(filepath, filename)))
         close_application()
 
 
-def get_coordinates_from_list(self):
+def get_coordinates_from_list(lst):
     import re
     result = list()
-    for str in self:
+    for str in lst:
         coord = list(filter(None,re.split('[^0-9.]+', str)))
         try:
             x1, y1, x2, y2 = map(float, coord)
