@@ -6,9 +6,9 @@
 """
 from os import listdir
 from os.path import isfile, join
+from sys import exit, argv
 
-
-DIRNAME="./test"
+DIRNAME="./"
 
 
 def ls_directory(path,move):
@@ -16,12 +16,10 @@ def ls_directory(path,move):
         dirs=listdir(path)
     except NotADirectoryError:
         print("Данный путь - не директория.")
-        import sys
-        sys.exit(0)
+        exit(0)
     except FileNotFoundError:
         print("Такой директории не существует")
-        import sys
-        sys.exit(0)
+        exit(0)
     for idx,obj in enumerate(dirs):
         stage = "|"
         if idx == len(dirs)-1:
@@ -32,6 +30,7 @@ def ls_directory(path,move):
             print("{}{}--{}".format(move, stage, obj))
             ls_directory(join(path, obj), move+"|   ")
 
-
+if (len(argv)>1):
+    DIRNAME=argv[1]
 print(DIRNAME)
-ls_directory(DIRNAME,"")
+ls_directory(DIRNAME, "")
