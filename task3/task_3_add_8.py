@@ -4,10 +4,11 @@
 она выводит список файлов и папок, которые есть в этой папке.
 Используя библиотеки os и sys
 """
-DIRNAME="./test"
-
 from os import listdir
 from os.path import isfile, join
+
+
+DIRNAME="./test"
 
 
 def ls_directory(path,move):
@@ -34,8 +35,3 @@ def ls_directory(path,move):
 
 print(DIRNAME)
 ls_directory(DIRNAME,"")
-
-
-
-#NotADirectoryError
-#
