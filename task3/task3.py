@@ -15,16 +15,16 @@ FILENAME_OUTPUT="output"
 
 
 def read_file_form_path(filename):
+    strings = list()
     try:
-        file = open(filename, 'r')
-        strings = file.readlines()
-        file.close()
-        return strings
+        with open(filename, 'r') as file:
+            strings = file.readlines()
     except FileNotFoundError:
         filepath = os.path.dirname(os.path.realpath(__file__))
         print("Файл {} не найден, создайте файл и запустите скрипт заново."
               .format(os.path.join(filepath, filename)))
         close_application()
+    return strings
 
 
 def close_application():
@@ -36,15 +36,18 @@ def calc_distance(coords):
     distance = list()
     from math import sqrt
     for coord in coords:
-        distance.append(sqrt((coord[2]-coord[0])**2+(coord[3]-coord[1])**2))
+        try:
+            distance.append(sqrt((coord[2]-coord[0])**2+(coord[3]-coord[1])**2))
+        except IndexError:
+            print("Сторока с координатами {} имеет не допустимый формат. "
+                  "Точка иключается из подсчета.".format(coord))
     return distance
 
 
 def find_max_min(coords):
-    coords.sort()
     try:
-        return [coords[0], coords[-1]]
-    except IndexError:
+        return [min(coords),max(coords)]
+    except ValueError:
         print("Не достаточно точек. Расстояние - 0")
         return [0]
 
@@ -68,12 +71,7 @@ def get_coordinates_from_list(lst):
     result = list()
     for str in lst:
         coord = list(filter(None,re.split('[^0-9.]+', str)))
-        try:
-            x1, y1, x2, y2 = map(float, coord)
-            result.append([x1, y1, x2, y2])
-        except ValueError:
-            print("Сторока с координатами {} имеет не допустимый формат. "
-                  "Точка иключается из подсчета.".format(str))
+        result.append([float(c) for c in coord])
     return result
 
 coord_list = read_file_form_path(FILENAME_INPUT)
