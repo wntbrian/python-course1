@@ -24,11 +24,17 @@ def ls_directory(path,move):
         stage = "|"
         if idx == len(dirs)-1:
             stage = "`"
+
         if isfile(join(path, obj)):
             print("{}{}--{}".format(move, stage, obj))
         else:
+            #move = move[:len(move) - 1] + move[len(move) - 1].replace("|", " ") + move[len(move):]
             print("{}{}--{}".format(move, stage, obj))
-            ls_directory(join(path, obj), move+"|   ")
+            if stage == "`":
+                last = " "
+            else:
+                last = "|"
+            ls_directory(join(path, obj), move+"{}   ".format(last))
 
 if (len(argv)>1):
     DIRNAME=argv[1]
