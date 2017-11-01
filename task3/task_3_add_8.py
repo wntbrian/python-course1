@@ -4,8 +4,7 @@
 она выводит список файлов и папок, которые есть в этой папке.
 Используя библиотеки os и sys
 """
-from os import listdir
-from os.path import isfile, join
+import os
 from sys import exit, argv
 
 DIRNAME="./"
@@ -13,7 +12,7 @@ DIRNAME="./"
 
 def ls_directory(path,move):
     try:
-        dirs=listdir(path)
+        dirs=os.listdir(path)
     except NotADirectoryError:
         print("Данный путь - не директория.")
         exit(0)
@@ -25,16 +24,15 @@ def ls_directory(path,move):
         if idx == len(dirs)-1:
             stage = "`"
 
-        if isfile(join(path, obj)):
+        if os.path.isfile(os.path.join(path, obj)):
             print("{}{}--{}".format(move, stage, obj))
         else:
-            #move = move[:len(move) - 1] + move[len(move) - 1].replace("|", " ") + move[len(move):]
             print("{}{}--{}".format(move, stage, obj))
             if stage == "`":
                 last = " "
             else:
                 last = "|"
-            ls_directory(join(path, obj), move+"{}   ".format(last))
+            ls_directory(os.path.join(path, obj), move+"{}   ".format(last))
 
 if (len(argv)>1):
     DIRNAME=argv[1]
