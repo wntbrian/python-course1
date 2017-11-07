@@ -6,6 +6,8 @@
 Уровней вложенности в меню может быть любое количество.
 """
 
+FILE_MENU = "menu"
+
 
 def read_file_form_path(filename):
     import os
@@ -35,14 +37,14 @@ def get_menu_items(lst):
     return result
 
 
-def show_user_menu_id(arr, addr, idx):
+def show_user_menu_id(source, addr, idx):
     if len(addr) > 0:
         print("Схема до найденого пункта меню:")
         move = ""
         for x in addr:
-            print("{}`-- {}".format(move,arr[x][-1]))
+            print("{}`-- {}".format(move, source[x][-1]))
             move += "   "
-            arr = arr[x]
+            source = source[x]
     elif not idx == '':
         print("Пункт меню с ID: {} не найден.".format(idx))
 
@@ -85,7 +87,7 @@ print_list = list()
 menu = list()
 address = list()
 
-data = read_file_form_path('menu')
+data = read_file_form_path(FILE_MENU)
 items = get_menu_items(data)
 menubyid = input("Ввелите ID требуемого меню: ")
 print("Меню для поиска: ")
