@@ -6,12 +6,16 @@
 Уровней вложенности в меню может быть любое количество.
 """
 
+
+import os
+import sys
+import re
+
+
 FILE_MENU = "menu"
 
 
 def read_file_form_path(filename):
-    import os
-    import sys
     strings = list()
     try:
         with open(filename, 'r') as file:
@@ -25,7 +29,6 @@ def read_file_form_path(filename):
 
 
 def get_menu_items(lst):
-    import re
     result = list()
     for string in lst:
         raw_menu = list(filter(None, re.split(' *, *', string.strip())))
@@ -38,11 +41,12 @@ def get_menu_items(lst):
 
 
 def show_user_menu_id(source, addr, idx):
+    _name = -1
     if len(addr) > 0:
         print("Схема до найденого пункта меню:")
         move = ""
         for x in addr:
-            print("{}`-- {}".format(move, source[x][-1]))
+            print("{}`-- {}".format(move, source[x][_name]))
             move += "   "
             source = source[x]
     elif not idx == '':
@@ -50,15 +54,15 @@ def show_user_menu_id(source, addr, idx):
 
 
 def show_menu(result, list_menu, limit='', addr=list(), pid='0', level=0):
-    global address
-    j = c = 0
+    global address, print_list
+    _id, _name, _pid = (0, 1, 2)
+    elem_order = count = 0
     # Запоминаем кол-во элементов с текущим Parent ID.
     for e in list_menu:
-        if e[2] == pid:
-            c = c + 1
-
+        if e[_pid] == pid:
+            count = count + 1
     for elem in list_menu:
-        if elem[2] == pid:
+        if elem[_pid] == pid:
             # Определяем отступ для отрисовки смещения.
             space = ""
             for i in range(level):
@@ -67,20 +71,20 @@ def show_menu(result, list_menu, limit='', addr=list(), pid='0', level=0):
                 else:
                     space += "  "
             # Проверяем последний эелемент в уровне, рисуем закрывашку.
-            if j == (c - 1):
-                print("{}`-- {}".format(space, elem[1]))
+            if elem_order == (count - 1):
+                print("{}`-- {}".format(space, elem[_name]))
                 print_list.insert(level, 0)
             else:
-                print("{}|-- {}".format(space, elem[1]))
+                print("{}|-- {}".format(space, elem[_name]))
                 print_list.insert(level, 1)
             # Формируем многомерный список, для задачи поиска по ID.
-            result.insert(j,elem[1:-1])
-            addr.insert(level, j)
+            result.insert(elem_order,elem[1:-1])
+            addr.insert(level, elem_order)
             # Передаем адрес нахождения искомого ID.
-            if elem[0] == limit:
+            if elem[_id] == limit:
                 address = addr[:level + 1]
-            j = j + 1
-            show_menu(result[j-1], list_menu, limit, addr, elem[0], level + 1)
+            elem_order = elem_order + 1
+            show_menu(result[elem_order-1], list_menu, limit, addr, elem[_id], level + 1)
 
 
 print_list = list()
@@ -89,7 +93,7 @@ address = list()
 
 data = read_file_form_path(FILE_MENU)
 items = get_menu_items(data)
-menubyid = input("Ввелите ID требуемого меню: ")
+menu_by_id = input("Введите ID требуемого меню(например 122): ")
 print("Меню для поиска: ")
-show_menu(menu, items, menubyid)
-show_user_menu_id(menu, address, menubyid)
+show_menu(menu, items, menu_by_id)
+show_user_menu_id(menu, address, menu_by_id)
