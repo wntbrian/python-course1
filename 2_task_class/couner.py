@@ -78,7 +78,7 @@ up = 27
 print("Вызываем последовательно next(count) {} раза.".format(up))
 for _ in range(up):
     next(count)
-print("После выхова next(count), ожидаем позицию счетчика {1}, а она: {0}".format(count.position, diff + up))
+print("После вызова next(count), ожидаем позицию счетчика {1}, а она: {0}".format(count.position, diff + up))
 print("Меняем режим счетчика на уменьшение: \ncount.MODE = Counter.decrease()")
 count.MODE = Counter.decrease()
 down = 92
@@ -87,4 +87,4 @@ diff = count.position
 print("Вызываем последовательно next(count) {} раза. В режиме уменьшения".format(down))
 for _ in range(down):
     next(count)
-print("После выхова next(count), ожидаем позицию счетчика {1}, а она: {0}, правильно, границы {2}:{3} и счетчик считает по кругу".format(count.position, diff - down, count.begin, count.end))
+print("После вызова next(count), ожидаем позицию счетчика {1}, а она: {0}, правильно, границы {2}:{3} и счетчик считает по кругу".format(count.position, diff - down, count.begin, count.end))
