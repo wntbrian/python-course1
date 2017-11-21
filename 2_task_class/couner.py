@@ -31,8 +31,10 @@ class Counter:
         """
         self.begin, self.end, self.position = first, last, enter
         self.MODE = 'increase'
+
     def __iter__(self):
         return (self)
+
     def __next__(self):
         if self.MODE == 'increase':
             if self.position == self.end:
