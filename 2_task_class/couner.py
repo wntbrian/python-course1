@@ -31,7 +31,8 @@ class Counter:
         """
         self.begin, self.end, self.position = first, last, enter
         self.MODE = 'increase'
-
+    def __iter__(self):
+        return (self)
     def __next__(self):
         if self.MODE == 'increase':
             if self.position == self.end:
@@ -55,7 +56,9 @@ print("Проверяем начальную позицию счетчика: {}
 diff = count.position
 up = 4
 print("Вызываем последовательно next(count) {} раза.".format(up))
-for _ in range(up):
+for _ in count:
+    if count.position == up:
+        break
     next(count)
 print("После выхова next(count), ожидаем позицию счетчика {1}, а она: {0}".format(count.position, diff + up))
 print("Меняем режим счетчика на уменьшение: \ncount.MODE = Counter.decrease()")
