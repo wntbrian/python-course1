@@ -26,17 +26,20 @@ def recipepuppy(url='http://www.recipepuppy.com/api/', lts=['onions','garlic'], 
         recipepuppy(url, lts, p + 1, err+1)
 
     data = load(response)
-    for num, select in enumerate(data['results']):
-        print("{} - {}".format(num,select['title'].strip()))
-    choose = input("Input your choose:")
-    if choose == 'n':
-        recipepuppy(url,lts,p+1)
-    try:
-        int_ch = int(choose)
-        webbrowser.open(data['results'][int_ch]['href'])
-    except ValueError:
-        print("Incorrect type")
-        recipepuppy(url, lts, p, err)
+    if data['results']:
+        for num, select in enumerate(data['results']):
+            print("{} - {}".format(num,select['title'].strip()))
+        choose = input("Input your choose:")
+        if choose == 'n':
+            recipepuppy(url,lts,p+1)
+        try:
+            int_ch = int(choose)
+            webbrowser.open(data['results'][int_ch]['href'])
+        except ValueError:
+            print("Incorrect type")
+            recipepuppy(url, lts, p, err)
+    else:
+        print("Don't find any recipe with this ingredients")
 
 ingre = input("Enter list of ingredients separate by space: ").split()
 recipepuppy('http://www.recipepuppy.com/api/',ingre)
