@@ -17,6 +17,7 @@ import webbrowser
 def ISS(url='http://api.open-notify.org/iss-now.json'):
     response = request.urlopen(url)
     data = load(response)
+    print("Opening browser...")
     webbrowser.open('https://www.openstreetmap.org/?mlat={0}&mlon={1}#map=4/{0}/{1}'.format(data['iss_position']['latitude']
 ,data['iss_position']['longitude']))
     #ISS(url) ### Бессмертный? Раскомментируй ;)

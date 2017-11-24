@@ -34,6 +34,7 @@ def recipepuppy(url='http://www.recipepuppy.com/api/', lts=['onions','garlic'], 
             recipepuppy(url,lts,p+1)
         try:
             int_ch = int(choose)
+            print("Opening browser...")
             webbrowser.open(data['results'][int_ch]['href'])
         except ValueError:
             print("Incorrect type")

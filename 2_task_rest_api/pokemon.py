@@ -24,6 +24,7 @@ def pokemon(url='https://pokeapi.co/api/v2/pokemon/', idx='1'):
         print("Don't find pokemon with ID: {}, Sorry".format(idx))
         exit(0)
     data = load(reader(response))
+    response.release_conn()
     stats_name = {}
     for num, stat in enumerate(data['stats']):
         stats_name[stat['stat']['name']] = num
@@ -46,4 +47,4 @@ def pokemon(url='https://pokeapi.co/api/v2/pokemon/', idx='1'):
     print('                Speed         ')
 
 choose = input("Input your pokemon ID:")
-pokemon('https://pokeapi.co/api/v2/pokemon/',choose)
+pokemon('https://pokeapi.co/api/v2/pokemon/', choose)
