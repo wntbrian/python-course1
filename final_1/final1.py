@@ -53,8 +53,8 @@ def show_user_menu_id(source, addr, idx):
         print("Пункт меню с ID: {} не найден.".format(idx))
 
 
-def show_menu(result, list_menu, limit='', addr=list(), pid='0', level=0):
-    global address, print_list
+def show_menu(result, list_menu, limit='', addr=list(), pid='0', level=0, print_list=list()):
+    global address
     _id, _name, _pid = (0, 1, 2)
     elem_order = count = 0
     # Запоминаем кол-во элементов с текущим Parent ID.
@@ -84,10 +84,9 @@ def show_menu(result, list_menu, limit='', addr=list(), pid='0', level=0):
             if elem[_id] == limit:
                 address = addr[:level + 1]
             elem_order = elem_order + 1
-            show_menu(result[elem_order-1], list_menu, limit, addr, elem[_id], level + 1)
+            show_menu(result[elem_order-1], list_menu, limit, addr, elem[_id], level + 1, print_list)
 
 
-print_list = list()
 menu = list()
 address = list()
 
