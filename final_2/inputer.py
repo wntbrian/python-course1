@@ -22,7 +22,7 @@ class ReadTag():
                 if attr[0] == 'class':
                     if attr[1] == 'info':
                         try:
-                            d = {"skills":self.skills, "skill_url":self.url, "title":self.name, "company":self.company, "company_url":self.company_url}
+                            d = {"skills":self.skills, "vacancy_url":self.url, "title":self.name, "company":self.company, "company_url":self.company_url}
                             self.result.append(d)
                         except:
                             print ("first run")

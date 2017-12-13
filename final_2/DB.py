@@ -30,11 +30,30 @@ class CreateTables:
     def create_tables():
         """ create tables in the PostgreSQL database"""
         commands = (
-            """CREATE TABLE skills (
+            """CREATE TABLE skill (
                     id integer PRIMARY KEY,
                     description varchar(255)
                     ) 
-            """,)
+            """,
+            """CREATE TABLE skill_map (
+                                vacancy integer,
+                                skill integer
+                                ) 
+                        """,
+            """CREATE TABLE vacancy (
+                                id SERIAL PRIMARY KEY,
+                                company integer,
+                                title varchar(255),
+                                url varchar(255)
+                                ) 
+                                """,
+            """CREATE TABLE company (
+                                  id SERIAL PRIMARY KEY,
+                                  name varchar(255),
+                                  url varchar(255)
+                                  ) 
+                                  """,
+        )
         conn = None
         try:
             conn = psycopg2.connect(host=PG_HOST, database=PG_DB, user=PG_USER, password=PG_PASS)
@@ -56,19 +75,47 @@ class InsertIntoTables:
         def __init__(self):
             self.sql = ""
         self.conn = None
+        self.conn = psycopg2.connect(host=PG_HOST, database=PG_DB, user=PG_USER, password=PG_PASS)
+        self.cur = self.conn.cursor()
+        for s in data:
+            try:
+                self.cur.execute(self.sql, s)
+            except (Exception, psycopg2.DatabaseError) as error:
+                print(error)
+            finally:
+                self.conn.commit()
+        if self.conn is not None:
+            self.conn.close()
+
+
+class Select:
+    @staticmethod
+    def select(sql):
+        """ query select from the table """
+        conn = None
+        rows = ""
         try:
-            self.conn = psycopg2.connect(host=PG_HOST, database=PG_DB, user=PG_USER, password=PG_PASS)
-            self.cur = self.conn.cursor()
-            self.cur.executemany(self.sql, data)
-            self.conn.commit()
-            self.cur.close()
+            conn = psycopg2.connect(host=PG_HOST, database=PG_DB, user=PG_USER, password=PG_PASS)
+            cur = conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+            cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
-            if self.conn is not None:
-                self.conn.close()
-
+            if conn is not None:
+                conn.close()
+            return rows
 
 class InsSkills(InsertIntoTables):
     def __init__(self):
-        self.sql = "INSERT INTO skills VALUES(%s,%s);"
+        self.sql = "INSERT INTO skill VALUES(%s,%s);"
+class InsSkillMap(InsertIntoTables):
+    def __init__(self):
+        self.sql = "INSERT INTO skill_map VALUES(%s,%s);"
+class InsVacancy(InsertIntoTables):
+    def __init__(self):
+        self.sql = "INSERT INTO vacancy (company, title, url) VALUES (%s,%s,%s);"
+class InsCompany(InsertIntoTables):
+    def __init__(self):
+        self.sql = "INSERT INTO company (name, url) VALUES(%s,%s);"
