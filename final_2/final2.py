@@ -55,3 +55,41 @@ def LoadDB():
                 for vac_skill in items['skills']:
                     skill_map.insert([[vacancy_id[0][0], vac_skill[0]]])
 
+
+select1 = """select v.title, c.name, v.url, v.salary_start, v.salary_end
+from vacancy v, company c, skill_map sm, skill s
+where	v.company = c.id
+and sm.vacancy = v.id
+and sm.skill = s.id
+and s.description = :skill_descr
+and v.salary_start >= :ss
+and v.salary_end <= :se
+"""
+select2 = """select v.title, c.name, v.url, v.salary_start, v.salary_end
+from vacancy v, company c, skill_map sm, skill s
+where	v.company = c.id
+and sm.vacancy = v.id
+and sm.skill = s.id
+and s.description = :skill_descr
+order by v.salary_start desc, v.salary_end desc
+"""
+select3 = """select *
+from (
+select t.id, t.descr, t.cnt, 
+row_number() over (partition by t.id order by t.cnt) r
+from (
+select s.id id, s.description descr, count(1) cnt
+from vacancy v, skill_map sm, skill s
+where	sm.vacancy = v.id
+and sm.skill = s.id
+group by s.id, s.description
+) t
+) t2
+where t.r <= 10
+"""
+select4 = """select c.id, c.name, count(1)
+from vacancy v, company c
+where	v.company = c.id
+group by c.id, c.name
+order by count(1) desc
+"""
