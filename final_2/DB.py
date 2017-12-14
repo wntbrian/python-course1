@@ -2,7 +2,7 @@ import psycopg2
 import os
 
 
-PG_HOST = os.getenv('PG_HOST', "localhost")
+PG_HOST = os.getenv('PG_HOST', "192.168.0.149")
 PG_DB = os.getenv('PG_DB', "final_2")
 PG_USER = os.getenv('PG_USER', "postgres")
 PG_PASS = os.getenv('PG_PASS', "password")
