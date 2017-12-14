@@ -1,9 +1,11 @@
 import psycopg2
+import os
 
-PG_HOST = "192.168.0.149"
-PG_DB = "final_2"
-PG_USER = "postgres"
-PG_PASS = "password"
+
+PG_HOST = os.getenv('PG_HOST', "localhost")
+PG_DB = os.getenv('PG_DB', "final_2")
+PG_USER = os.getenv('PG_USER', "postgres")
+PG_PASS = os.getenv('PG_PASS', "password")
 
 
 class CreateDB:
@@ -44,7 +46,9 @@ class CreateTables:
                                 id SERIAL PRIMARY KEY,
                                 company integer,
                                 title varchar(255),
-                                url varchar(255)
+                                url varchar(255),
+                                salary_start integer,
+                                salary_end integer
                                 ) 
                                 """,
             """CREATE TABLE company (
@@ -71,7 +75,7 @@ class CreateTables:
 
 class InsertIntoTables:
     def insert(self,data):
-        """ insert multiple products into the products table  """
+        """ insert multiple products into tables  """
         def __init__(self):
             self.sql = ""
         self.conn = None
@@ -81,7 +85,7 @@ class InsertIntoTables:
             try:
                 self.cur.execute(self.sql, s)
             except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
+                self.error = error
             finally:
                 self.conn.commit()
         if self.conn is not None:
@@ -107,15 +111,19 @@ class Select:
                 conn.close()
             return rows
 
+
 class InsSkills(InsertIntoTables):
     def __init__(self):
         self.sql = "INSERT INTO skill VALUES(%s,%s);"
+
 class InsSkillMap(InsertIntoTables):
     def __init__(self):
         self.sql = "INSERT INTO skill_map VALUES(%s,%s);"
+
 class InsVacancy(InsertIntoTables):
     def __init__(self):
-        self.sql = "INSERT INTO vacancy (company, title, url) VALUES (%s,%s,%s);"
+        self.sql = "INSERT INTO vacancy (company, title, url, salary_start, salary_end) VALUES (%s,%s,%s,%s,%s);"
+
 class InsCompany(InsertIntoTables):
     def __init__(self):
         self.sql = "INSERT INTO company (name, url) VALUES(%s,%s);"
