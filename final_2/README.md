@@ -64,6 +64,10 @@ python index.py -load
 ```commandline
 python index.py -skill python postgresql
 ```
+Поиск вакансий по вашим умениям учитывая ожидания в ЗП
+```commandline
+python index.py -skill -s React.js python -min 100000 
+```
 Самый популятрые навыки(скилы)
 ```commandline
 python index.py -top

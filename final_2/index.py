@@ -43,8 +43,10 @@ if (args.min or args.max) and args.skills:
             table_data.append([line[NAME], line[COMPANY], "https://moikrug.ru"+line[URL], line[MIN], line[MAX]])
         table = AsciiTable(table_data, "Вакансии по навыкам c учетом ЗП: {}".format(", ".join(args.skills)))
         print(table.table)
+        print("Для просмотра полной статистике по скилу, уберите из запроса -min и -max")
 
-if args.skills:
+
+if args.skills and not (args.min or args.max):
     NAME = 0
     COMPANY = 1
     URL = 2
