@@ -2,7 +2,10 @@ import re
 
 
 class TagParser:
-
+    """
+    Парсер HTML страницы moikrug.ru останованный на тэгах
+    Резултат формируется в списке result
+    """
     def __init__(self):
         self.dryrun()
 

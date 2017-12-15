@@ -4,6 +4,10 @@ import urllib3
 
 
 class Final2:
+    """
+    Общий класс финального задания №2. Содержит основную логик приложения.
+    Вызов парсинга страниц, заполнение БД, и пропрос селектов в базу.
+    """
     def __init__(self):
         self.skill = DB.InsSkills()
         self.company = DB.InsCompany()

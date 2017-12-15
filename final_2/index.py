@@ -30,7 +30,7 @@ if args.load:
     else:
         final.load_db()
 
-if args.min or args.max or args.skills:
+if (args.min or args.max) and args.skills:
     NAME = 0
     COMPANY = 1
     URL = 2

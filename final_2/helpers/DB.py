@@ -11,6 +11,9 @@ PG_PASS = config['DATABASE']['PG_PASS']
 
 
 class CreateDB:
+    """
+    Создание БД в чистом сервере.
+    """
     @staticmethod
     def create_db():
         try:
@@ -30,6 +33,9 @@ class CreateDB:
 
 
 class CreateTables:
+    """
+    Создание схемы в БД.
+    """
     @staticmethod
     def create_tables():
         """ create tables in the PostgreSQL database"""
@@ -77,7 +83,7 @@ class CreateTables:
 
 class InsertIntoTables:
     def insert(self,data):
-        """ insert multiple products into tables  """
+        """ insert multiple into tables  """
         def __init__(self):
             self.sql = ""
         self.conn = None
