@@ -2,7 +2,7 @@
 
 
 import argparse
-import final2
+import lib.final2 as final2
 from terminaltables import AsciiTable
 
 final = final2.Final2()
