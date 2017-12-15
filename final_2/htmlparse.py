@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-from final_2.MoiKrugParser import TagParser
+from MoiKrugParser import TagParser
 
 
 class MyHTMLParser(HTMLParser):

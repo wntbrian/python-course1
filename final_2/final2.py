@@ -1,5 +1,5 @@
-import final_2.DB as DB
-import final_2.htmlparse as moikrug
+import DB as DB
+import htmlparse as moikrug
 import urllib3
 
 
@@ -19,9 +19,10 @@ class Final2:
         data = moikrug.MyHTMLParser()
         urllib3.disable_warnings()
         http = urllib3.PoolManager()
-        page, page_end, error = 1, 0
-        vacancyBank = []
+        page, page_end, error = 1, 3, 0
+        vacancybank = []
 
+        print("Загрузка Данных")
         while page > 0:
             response = http.request('GET', 'https://moikrug.ru/vacancies?page={}'.format(page), preload_content=False)
             if response.status != 200:
@@ -34,12 +35,15 @@ class Final2:
             data.feed(response.data.decode('utf-8'))
             if len(data.content.result) < 6:
                 break
-            vacancyBank.append(data.content.result)
-            print(page)
+            vacancybank.append(data.content.result)
+            print('.', sep=' ', end='', flush=True)
             page = page + 1
             data.content.dryrun()
-        for vac in vacancyBank:
+
+        print ("\nЗагрузка БД")
+        for vac in vacancybank:
             for items in vac:
+                print('.', sep=' ', end='', flush=True)
                 self.skill.insert(items['skills'])
                 company_id = self.select.select("SELECT id FROM company WHERE name = '{}'".format(items['company']))
                 if not company_id:
@@ -53,20 +57,20 @@ class Final2:
                     for vac_skill in items['skills']:
                         self.skill_map.insert([[vacancy_id[0][0], vac_skill[0]]])
 
-    def select_skill_salary(self,*args):
+    def select_skill_salary(self,min='',max='',skills=[]):
         sql = """select v.title, c.name, v.url, v.salary_start, v.salary_end
         from vacancy v, company c
         where	v.company = c.id"""
-        if args[0]:
-            sql += " and (v.salary_start <= {0} or v.salary_start is null or {0} is null)".format(args[0])
-        if args[1]:
-            sql += " and (v.salary_end >= {0} or v.salary_end is null or {0} is null)".format(args[1])
-        if args[2]:
-            sql += " and {} = ( select count(1) ".format(len(args[2]))
+        if max:
+            sql += " and (v.salary_start <= {0} or v.salary_start is null or {0} is null)".format(max)
+        if min:
+            sql += " and (v.salary_end >= {0} or v.salary_end is null or {0} is null)".format(min)
+        if skills:
+            sql += " and {} = ( select count(1) ".format(len(skills))
             sql += """ from skill_map inner join skill on skill.id = skill_map.skill
                    where v.id = skill_map.vacancy
                    and lower(skill.description) in ("""
-            for skill in args[2]:
+            for skill in skills:
                 sql += "'"+skill.lower()+"',"
             sql = sql[:-1]
             sql += "))"

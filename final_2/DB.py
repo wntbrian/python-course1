@@ -1,11 +1,13 @@
 import psycopg2
-import os
+import configparser
 
 
-PG_HOST = os.getenv('PG_HOST', "192.168.0.149")
-PG_DB = os.getenv('PG_DB', "final_2")
-PG_USER = os.getenv('PG_USER', "postgres")
-PG_PASS = os.getenv('PG_PASS', "password")
+config = configparser.ConfigParser()
+config.read('postgres.ini')
+PG_HOST = config['DATABASE']['PG_HOST']
+PG_DB = config['DATABASE']['PG_DB']
+PG_USER = config['DATABASE']['PG_USER']
+PG_PASS = config['DATABASE']['PG_PASS']
 
 
 class CreateDB:
@@ -37,26 +39,26 @@ class CreateTables:
                     description varchar(255)
                     ) 
             """,
-            """CREATE TABLE skill_map (
-                                vacancy integer,
-                                skill integer
-                                ) 
-                        """,
-            """CREATE TABLE vacancy (
-                                id SERIAL PRIMARY KEY,
-                                company integer,
-                                title varchar(255),
-                                url varchar(255),
-                                salary_start integer,
-                                salary_end integer
-                                ) 
-                                """,
             """CREATE TABLE company (
                                   id SERIAL PRIMARY KEY,
                                   name varchar(255),
                                   url varchar(255)
                                   ) 
                                   """,
+            """CREATE TABLE vacancy (
+                                id SERIAL PRIMARY KEY,
+                                company integer references company(id),
+                                title varchar(255),
+                                url varchar(255),
+                                salary_start integer,
+                                salary_end integer
+                                ) 
+                                """,
+            """CREATE TABLE skill_map (
+                                vacancy integer references vacancy(id),
+                                skill integer references skill(id)
+                                ) 
+                        """
         )
         conn = None
         try:

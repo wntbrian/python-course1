@@ -10,7 +10,6 @@ class TagParser:
         self.TAGS = []
         self.CLASS = []
         self.skills = []
-        self.titles = []
         self.result = []
         self.value = int()
         self.salary = ""
@@ -72,4 +71,3 @@ class TagParser:
                         self.company = data
                 if self.CLASS[LASTITEM] == "count" and self.CLASS[-2] == "salary":
                     self.salary += data
-
