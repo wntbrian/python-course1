@@ -11,7 +11,7 @@ class Final2:
         self.skill_map = DB.InsSkillMap()
         self.select = DB.Select()
 
-    def load_db(self):
+    def load_db(self,page_end=100):
         # Table init
         DB.CreateDB().create_db()
         DB.CreateTables().create_tables()
@@ -19,7 +19,7 @@ class Final2:
         data = moikrug.MyHTMLParser()
         urllib3.disable_warnings()
         http = urllib3.PoolManager()
-        page, page_end, error = 1, 3, 0
+        page, error = 1, 0
         vacancybank = []
 
         print("Загрузка Данных")
@@ -39,6 +39,7 @@ class Final2:
             print('.', sep=' ', end='', flush=True)
             page = page + 1
             data.content.dryrun()
+        print ("Всего получено {} страниц".format(page-1))
 
         print ("\nЗагрузка БД")
         for vac in vacancybank:
